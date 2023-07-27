@@ -34,13 +34,13 @@ parser.add_argument("--split", type=int, default=1)
 # Model configuration.
 parser.add_argument(
     "--model_config_file",
-    default="./configs/support__rec_mlp__0__model.json",
+    default="./configs/support__rec_mlp__0__model.json",  # ? file not found
     help="Suggested format: Dataset_name__model_type__trial_id__model.json")
 
 # Training configuration.
 parser.add_argument(
     "--train_config_file",
-    default="./configs/support__rec_mlp__0__train.json",
+    default="./configs/support__rec_mlp__0__train.json",  # ? file not found
     help="Suggested format: Dataset_name__model_type__trial_id__train.json")
 
 # Other configuration
@@ -80,7 +80,7 @@ if args.dataset == "mimic":
     random_state = np.random.RandomState(seed=0)
     for phase in ["train", "valid", "test"]:
         input_file = os.path.join(
-            args.path, "mimiciii/Data/" + phase + "_%d.npz" % args.split)
+            args.path, "mimiciii/Data/" + phase + "_%d.npz" % args.split)  ## %d: a placeholder for number. path = ./data/mimiciii/Data/train_number.npz ; ? file/directory not found
         batch_size = train_config["batch_size"]
         if use_full_size_per_batch and phase == "train":
             dt = np.load(input_file)
@@ -98,7 +98,7 @@ elif args.dataset == "mimic_seq":
     random_state = np.random.RandomState(seed=0)
     for phase in ["train", "valid", "test"]:
         input_file = os.path.join(
-            args.path, phase + "_%d.pkl" % args.split)
+            args.path, phase + "_%d.pkl" % args.split)  ## sample route: ./data/mimic_seq/Data/train_number.pkl ; ? file/directory not found
         batch_size = train_config["batch_size"]
         if use_full_size_per_batch and phase == "train":
             dt = pickle.load(open(input_file, "rb"))
@@ -117,10 +117,10 @@ elif args.dataset == "support":
     for phase in ["train", "valid", "test"]:
         if args.fine_tune and phase in ["train", "valid"]:
             input_file = os.path.join(
-                args.path, phase + "_%d_fine_tune.npz" % args.split)
-        else:
+                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found
+        else:      ## not (args.fine_tune and phase in ["train", "valid"])
             input_file = os.path.join(
-                args.path, phase + "_%d.npz" % args.split)
+                args.path, phase + "_%d.npz" % args.split)  ## file exists
         batch_size = train_config["batch_size"]
         if use_full_size_per_batch and phase == "train":
             dt = np.load(input_file)
@@ -139,10 +139,10 @@ elif args.dataset == "metabric":
     for phase in ["train", "valid", "test"]:
         if args.fine_tune and phase in ["train", "valid"]:
             input_file = os.path.join(
-                args.path, phase + "_%d_fine_tune.npz" % args.split)
+                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found
         else:
             input_file = os.path.join(
-                args.path, phase + "_%d.npz" % args.split)
+                args.path, phase + "_%d.npz" % args.split)   ## file exists
         batch_size = train_config["batch_size"]
         if use_full_size_per_batch and phase == "train":
             dt = np.load(input_file)
@@ -155,7 +155,7 @@ elif args.dataset == "metabric":
             random_state,
             is_eval=(phase != "train"))
 else:
-    raise NotImplementedError("Dataset %s is not supported." % args.dataset)
+    raise NotImplementedError("Dataset %s is not supported." % args.dataset)   ## %s: placeholder for string
 
 # Initialize the model.
 # Load model config.
@@ -254,7 +254,7 @@ exp_name = SEP.join([task_setting, dataset_name, model_setting, trial_id])
 
 exp_name = SEP.join([exp_name, "split_%d" % args.split, "seed_%d" % args.seed])
 
-# Result paths.
+# specify result paths.
 result_path = args.result_path or os.path.join(args.path, "results")
 if not os.path.exists(result_path):
     os.makedirs(result_path)
@@ -272,25 +272,25 @@ else:
     log_path = None
 
 trainer = SODENTrainer(
-    model=model,
-    device=args.device,
-    criterions=criterions,
-    optimizer=optimizer,
-    dataloaders=dataloaders,
-    metrics=metrics,
-    earlystop_metric_name="survival_loss",
-    batch_size=train_config["batch_size"],
-    num_epochs=args.num_epochs if not args.evaluate else -1,
-    patience=args.patience if not args.evaluate else -1,
-    grad_clip=train_config["grad_clip"],
-    result_path=result_path,
-    model_path=model_path,
-    log_path=log_path if not args.evaluate else None,
-    log_step=args.log_interval,
-    exp_name=exp_name,
-    verbose=args.verbose,
-    fine_tune=(args.fine_tune or args.evaluate),
-    debug=args.debug)
+    model=model,      # SODENModel
+    device=args.device,    # A string of "cuda" or "cpu", default = "cuda"
+    criterions=criterions,     # A dict with values being instantiations of training objectives; survival_loss in this case
+    optimizer=optimizer,    # An instantiation of an optimizer
+    dataloaders=dataloaders, # A dict of dataloaders where keys are "train", "valid", and "test" and each values is a PyTorch Dataloader.
+    metrics=metrics, # A dict of evaluation metrics of interest.
+    earlystop_metric_name="survival_loss",   # A string indicating the name of metrics to be used for early stopping.
+    batch_size=train_config["batch_size"],    # A number indicating batch_size. This should align with the dataloaders.
+    num_epochs=args.num_epochs if not args.evaluate else -1,    # Maximum number of epochs to run.
+    patience=args.patience if not args.evaluate else -1,    # Initial patience for early stopping.
+    grad_clip=train_config["grad_clip"],    # A number for grad_clip.
+    result_path=result_path,    # A string of path to store the results.
+    model_path=model_path,    # A string of path to store the models.
+    log_path=log_path if not args.evaluate else None,    # A string of path to store the logs.
+    log_step=args.log_interval,    # The logging interavl in terms of training steps.
+    exp_name=exp_name,    # The name of this experiment.
+    verbose=args.verbose,    # Verbose mark.
+    fine_tune=(args.fine_tune or args.evaluate),    # True or False
+    debug=args.debug)    # Debug flag.
 
 if not args.evaluate:
     trainer.train()

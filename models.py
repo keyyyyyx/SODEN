@@ -21,7 +21,7 @@ class Reshape(nn.Module):
         return x.view(self.shape)
 
 
-def make_layer(layer_type, **arguments):
+def make_layer(layer_type, **arguments):  ## Note: ** takes specified argument names and puts them into a dictionary (https://stackoverflow.com/questions/11315010/what-do-and-before-a-variable-name-mean-in-a-function-signature)
     """Makes a layer given layer_type and arguments.
 
     Arguments:
@@ -131,6 +131,7 @@ def make_sequential(layer_configs, input):
     return nn.Sequential(layers)
 
 
+## make a complete nn model
 def make_net(input_size, hidden_size, num_layers, output_size, dropout=0,
              batch_norm=False, act="relu", softplus=True):
     if act == "selu":
