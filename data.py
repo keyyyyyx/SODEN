@@ -124,7 +124,7 @@ def get_dataloader(t,
         constant_dict["t_min"] = torch.tensor(t[0], dtype=torch.float32)
         constant_dict["t_max"] = torch.tensor(t[-1], dtype=torch.float32)
 
-        kmf = KaplanMeierFitter()
+        kmf = KaplanMeierFitter()  ## Class for fitting the Kaplan-Meier estimate for the survival function.
         kmf.fit(t, event_observed=(1 - delta))
         G_T = kmf.predict(t, interpolate=True).to_numpy()
         for eps in [0.1, 0.2, 0.3, 0.4, 0.5]:

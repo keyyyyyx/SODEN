@@ -163,7 +163,7 @@ if __name__ == "__main__":
     for i in range(args.starting_trial, args.starting_trial + args.num_trials):
         # Complete the model config based on basic_model_config.
         model_config = generate_model_config(basic_model_config, random_state)
-        # Dump config to a json file
+        # Dump config to a json file; stored in ./configs
         filename = SEP.join([base_filename, "%d" % i, "model.json"])
         with open(os.path.join(exp_config_path, filename), "w") as f:
             json.dump(model_config, f, indent=4)

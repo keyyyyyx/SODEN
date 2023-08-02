@@ -189,7 +189,7 @@ class SODENTrainer(object):
         loss = sum(loss_dict.values())
         loss.backward()
         if self.grad_clip is not None:
-            nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)
+            nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)  ## ---check this line---
         self.optimizer.step()
         return loss_dict
 

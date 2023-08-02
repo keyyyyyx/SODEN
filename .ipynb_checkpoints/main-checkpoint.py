@@ -34,13 +34,13 @@ parser.add_argument("--split", type=int, default=1)
 # Model configuration.
 parser.add_argument(
     "--model_config_file",
-    default="./configs/support__rec_mlp__0__model.json",  # ? file not found
+    default="./configs/support__rec_mlp__0__model.json",  ## files generated in generate_config.py
     help="Suggested format: Dataset_name__model_type__trial_id__model.json")
 
 # Training configuration.
 parser.add_argument(
     "--train_config_file",
-    default="./configs/support__rec_mlp__0__train.json",  # ? file not found
+    default="./configs/support__rec_mlp__0__train.json",  ## files generated in generate_config.py
     help="Suggested format: Dataset_name__model_type__trial_id__train.json")
 
 # Other configuration
@@ -75,7 +75,7 @@ dataloaders = {}
 feature_size = None
 use_embed = False
 if args.dataset == "mimic":
-    assert args.path.strip("/").split("/")[-1] == "mimic"
+    assert args.path.strip("/").split("/")[-1] == "mimic"  ## change path to "./data/mimic/"
     # Prepare dataloaders.
     random_state = np.random.RandomState(seed=0)
     for phase in ["train", "valid", "test"]:
@@ -155,7 +155,7 @@ elif args.dataset == "metabric":
             random_state,
             is_eval=(phase != "train"))
 else:
-    raise NotImplementedError("Dataset %s is not supported." % args.dataset)
+    raise NotImplementedError("Dataset %s is not supported." % args.dataset)   ## %s: placeholder for string
 
 # Initialize the model.
 # Load model config.
@@ -271,6 +271,8 @@ if args.save_log:
 else:
     log_path = None
 
+
+## train model with specified parameters
 trainer = SODENTrainer(
     model=model,      # SODENModel
     device=args.device,    # A string of "cuda" or "cpu", default = "cuda"
@@ -289,9 +291,10 @@ trainer = SODENTrainer(
     log_step=args.log_interval,    # The logging interavl in terms of training steps.
     exp_name=exp_name,    # The name of this experiment.
     verbose=args.verbose,    # Verbose mark.
-    fine_tune=(args.fine_tune or args.evaluate),    
+    fine_tune=(args.fine_tune or args.evaluate),    # True or False
     debug=args.debug)    # Debug flag.
 
+## compute evaluation metrics if specified
 if not args.evaluate:
     trainer.train()
 else:

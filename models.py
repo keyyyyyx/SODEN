@@ -7,7 +7,7 @@ from copy import deepcopy
 import torch
 import torch.nn as nn
 from torch.nn.utils.rnn import pack_padded_sequence
-from torchdiffeq import odeint_adjoint as odeint
+from torchdiffeq import odeint_adjoint as odeint ## the ode solver with ajoint method
 
 from metrics import NUM_INT_STEPS
 
@@ -131,7 +131,7 @@ def make_sequential(layer_configs, input):
     return nn.Sequential(layers)
 
 
-## make a complete nn model
+## make a complete nn model with specified layers and sizes
 def make_net(input_size, hidden_size, num_layers, output_size, dropout=0,
              batch_norm=False, act="relu", softplus=True):
     if act == "selu":
@@ -156,7 +156,7 @@ def make_net(input_size, hidden_size, num_layers, output_size, dropout=0,
         modules.append(nn.Softplus())
     return nn.Sequential(*modules)
 
-
+## initialize basic survival ODE function
 class BaseSurvODEFunc(nn.Module):
     def __init__(self):
         super(BaseSurvODEFunc, self).__init__()
@@ -173,6 +173,7 @@ class BaseSurvODEFunc(nn.Module):
         # set `self.batch_time_mode` to `True` and the output will have size
         # (len(t), size(y)).
 
+    ## What is nfe??
     def reset_nfe(self):
         self.nfe = 0
 
