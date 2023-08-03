@@ -83,7 +83,7 @@ class SODENTrainer(object):
         self.model = model
         self.device = device
         self.criterions = criterions
-        self.optimizer = optimizer
+        self.optimizer = optimizer    ## from torch.optim; optim.Adam or optim.RMSprop
         self.dataloaders = dataloaders
         self.metrics = metrics
         self.earlystop_metric_name = earlystop_metric_name
@@ -167,6 +167,7 @@ class SODENTrainer(object):
             labels = Variable(labels).to(self.device)
         return features, labels
 
+    ## Take model output and actual labels as parameters; returns a dictionary with criterion name as key and returns torch.mean(batch_loss); only survival_loss is supported
     def calculate_loss(self, outputs, labels):
         loss_dict = {}
         loss_dict = {}
@@ -179,18 +180,19 @@ class SODENTrainer(object):
                 raise NotImplementedError("Need to check the implementation of"
                                           " `calculate_loss` method.")
             else:
-                loss_dict[name] = self.criterions[name](outputs, labels)
+                loss_dict[name] = self.criterions[name](outputs, labels)  ## returns torch.mean(batch_loss); self.criterions["survival_loss"] = survival_loss(outputs, labels) defined in main.py
         return loss_dict
-
+    
+    ## Performs a single optimization step (parameter update) for one batch
     def train_one_step(self, features, labels):
-        self.optimizer.zero_grad()
-        outputs = self.model(features)
+        self.optimizer.zero_grad()     ## Sets the gradients of all optimized torch.Tensor s to zero.
+        outputs = self.model(features) 
         loss_dict = self.calculate_loss(outputs, labels)  ## use previous function
         loss = sum(loss_dict.values())
-        loss.backward()
+        loss.backward() ## compute gradients
         if self.grad_clip is not None:
-            nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)  ## ---check this line---
-        self.optimizer.step()
+            nn.utils.clip_grad_norm_(self.model.parameters(), self.grad_clip)  ## ---check this line---: returns total norm of the parameter gradients (viewed as a single vector).
+        self.optimizer.step() ## Performs a single optimization step (parameter update).
         return loss_dict
 
     def clear_running_loss(self):
@@ -212,8 +214,9 @@ class SODENTrainer(object):
                 "step %5d total loss: %.6f" % (self.curr_step, total_loss),
                 level=2)
             self.clear_running_loss()
-
-    def train_one_epoch(self, train_loader):
+    
+    ## Performs a single optimization step for each batch_data in a epoch
+    def train_one_epoch(self, train_loader): ## train_loader: dataloaders["train"]
         self.model.train()
         self.curr_step = 0
         for batch_data in train_loader:
@@ -300,14 +303,14 @@ class SODENTrainer(object):
             self.curr_patience -= 1
             self.printer.print(
                 "epoch %d" % self.curr_epoch, level=1, print_time=True)
-            self.train_one_epoch(self.dataloaders["train"])
+            self.train_one_epoch(self.dataloaders["train"])  ## Performs a single optimization step for each batch_data in one epoch
 
             self.eval(phase="valid")
-            metric_value_dict = self.get_metric_value_dict(phase="valid")
+            metric_value_dict = self.get_metric_value_dict(phase="valid")  ## get evaluation metric on validation set
             self.metric_value_trajectories["valid"].append(metric_value_dict)
 
             self.eval(phase="test")
-            metric_value_dict = self.get_metric_value_dict(phase="test")
+            metric_value_dict = self.get_metric_value_dict(phase="test") ## get evaluation metric on testing set
             self.metric_value_trajectories["test"].append(metric_value_dict)
 
             # Compare the current earlystop metric to the best one. Possibly

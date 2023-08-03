@@ -170,11 +170,11 @@ func_type = model_config["ode"]["surv_ode_0"]["func_type"]
 if func_type in ["rec_mlp"]:
     def survival_loss(outputs, labels):
         batch_loss = -labels * torch.log(
-            outputs["lambda"].clamp(min=1e-8)) + outputs["Lambda"]
+            outputs["lambda"].clamp(min=1e-8)) + outputs["Lambda"]  ## SODEN loss function 
         return torch.mean(batch_loss)
 elif func_type in ["cox_mlp_mlp", "cox_mlp_exp"]:
     def survival_loss(outputs, labels):
-        batch_loss = -labels * outputs["log_lambda"] + outputs["Lambda"]
+        batch_loss = -labels * outputs["log_lambda"] + outputs["Lambda"] 
         return torch.mean(batch_loss)
 else:
     raise NotImplementedError("func_type %s is not supported." % func_type)

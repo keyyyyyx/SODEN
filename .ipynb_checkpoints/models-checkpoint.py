@@ -282,7 +282,7 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         else:
             return output.squeeze(0)
 
-
+## The proposed SODEN model
 class NonCoxFuncModel(nn.Module):
     """NonCoxFuncModel."""
 
@@ -308,7 +308,7 @@ class NonCoxFuncModel(nn.Module):
         if self.func_type == "rec_mlp":
             self.odefunc = ContextRecMLPODEFunc(
                 feature_size, config["hidden_size"], config["num_layers"],
-                batch_norm=config["batch_norm"], use_embed=use_embed)
+                batch_norm=config["batch_norm"], use_embed=use_embed)     ## initialize ContextRecMLPODEFunc
         else:
             raise NotImplementedError("Function type %s is not supported."
                                       % self.func_type)
@@ -353,7 +353,7 @@ class NonCoxFuncModel(nn.Module):
                 t = inputs["eval_t"] / t_max
                 t = torch.cat([torch.zeros([1]).to(device), t], dim=0)
                 outputs["cum_hazard_seqs"] = odeint(
-                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]
+                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]  
 
                 # Eval for Brier Score
                 t = inputs["t_max"] * ones
@@ -409,7 +409,7 @@ class NonCoxFuncModel(nn.Module):
 
         return outputs
 
-
+## SODEN-PH and SODEN-Cox respectively correspond to cox_mlp_mlp and cox_mlp_exp
 class CoxFuncModel(nn.Module):
     """CoxFuncModel."""
 
@@ -433,11 +433,11 @@ class CoxFuncModel(nn.Module):
         self.has_feature = config["has_feature"]
         self.use_embed = use_embed
         if self.has_feature:
-            if self.func_type == "cox_mlp_exp":
+            if self.func_type == "cox_mlp_exp":    ## SODEN-Cox model
                 beta_init = torch.randn(feature_size) / math.sqrt(feature_size)
                 beta_init = beta_init.view(-1, 1)
                 self.beta = nn.Parameter(beta_init)
-            elif self.func_type == "cox_mlp_mlp":
+            elif self.func_type == "cox_mlp_mlp":    ## SODEN-PH model
                 hidden_size = config["hidden_size"]
                 num_layers = config["num_layers"]
                 self.x_net = make_net(
@@ -597,9 +597,9 @@ class SODENModel(nn.Module):
             self.rnn = None
         config = model_config["ode"]["surv_ode_0"]
         if config["layer_type"] == "surv_ode":
-            if config["func_type"] in ["rec_mlp"]:
+            if config["func_type"] in ["rec_mlp"]:  ## the proposed SODEN model
                 self.model = NonCoxFuncModel(model_config, feature_size, use_embed)
-            elif config["func_type"] in ["cox_mlp_exp", "cox_mlp_mlp"]:
+            elif config["func_type"] in ["cox_mlp_exp", "cox_mlp_mlp"]:       ## SODEN-PH and SODEN-Cox respectively correspond to cox_mlp_mlp and cox_mlp_exp
                 self.model = CoxFuncModel(
                     model_config, feature_size, use_embed)
             else:
