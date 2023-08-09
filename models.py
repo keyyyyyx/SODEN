@@ -131,7 +131,7 @@ def make_sequential(layer_configs, input):
     return nn.Sequential(layers)
 
 
-## make a complete nn model with specified layers and sizes
+## make a complete nn model with specified layers and sizes; take feature vector as input
 def make_net(input_size, hidden_size, num_layers, output_size, dropout=0,
              batch_norm=False, act="relu", softplus=True):
     if act == "selu":
@@ -238,13 +238,16 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         self.batch_norm = batch_norm
         self.use_embed = use_embed
         if use_embed:
-            self.embed = nn.Embedding(1602, self.feature_size)
+            self.embed = nn.Embedding(1602, self.feature_size)  ## A simple lookup table that maps index value to a weighted matrix of certain dimension
         else:
             self.embed = None
         self.net = make_net(input_size=feature_size+2, hidden_size=hidden_size,
                             num_layers=num_layers, output_size=1,
                             batch_norm=batch_norm)
-
+    
+    ## ---where does the y come from?--- passed within odeint as init_cond?
+    ## forward propagetion; one step forward
+    ## outputs a number from nn
     def forward(self, t, y):
         """
         Arguments:
@@ -259,9 +262,9 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         """
         self.nfe += 1
         device = next(self.parameters()).device
-        Lambda_t = y.index_select(-1, torch.tensor([0]).to(device)).view(-1, 1)
-        T = y.index_select(-1, torch.tensor([1]).to(device)).view(-1, 1)
-        x = y.index_select(-1, torch.tensor(range(2, y.size(-1))).to(device))
+        Lambda_t = y.index_select(-1, torch.tensor([0]).to(device)).view(-1, 1) ## retrieve Lambda_t from y, returns as a 2-D tensor of 1 element
+        T = y.index_select(-1, torch.tensor([1]).to(device)).view(-1, 1)  ## retrieve the final time step T from y, returns as a 2-D tensor of 1 element
+        x = y.index_select(-1, torch.tensor(range(2, y.size(-1))).to(device))  ## retrieve features from y, returns as a 1-D tensor
         if self.use_embed:
             x = torch.mean(
                 self.embed(torch.tensor(x, dtype=torch.long).to(device)),
@@ -270,13 +273,13 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         # $\int_0^T f(s; x) ds = \int_0^1 T f(tT; x) dt$, where $t = s / T$
         inp = torch.cat(
             [Lambda_t,
-             t.repeat(T.size()) * T,  # s = t * T
+             t.repeat(T.size()) * T,  # s = t * T; time step to be evaluated * final time step
              x.view(-1, self.feature_size)], dim=1)
         output = self.net(inp) * T  # f(tT; x) * T
         zeros = torch.zeros_like(
             y.index_select(-1, torch.tensor(range(1, y.size(-1))).to(device))
-        )
-        output = torch.cat([output, zeros], dim=1)
+        )  ## Returns a tensor filled with the scalar value 0, with the same size as input
+        output = torch.cat([output, zeros], dim=1)   
         if self.batch_time_mode:
             return output
         else:
@@ -308,7 +311,7 @@ class NonCoxFuncModel(nn.Module):
         if self.func_type == "rec_mlp":
             self.odefunc = ContextRecMLPODEFunc(
                 feature_size, config["hidden_size"], config["num_layers"],
-                batch_norm=config["batch_norm"], use_embed=use_embed)     ## initialize ContextRecMLPODEFunc; 
+                batch_norm=config["batch_norm"], use_embed=use_embed)     ## initialize ContextRecMLPODEFunc; ode function
         else:
             raise NotImplementedError("Function type %s is not supported."
                                       % self.func_type)
@@ -324,7 +327,7 @@ class NonCoxFuncModel(nn.Module):
         init_cond = inputs["init_cond"]
         features = inputs["features"]
         init_cond = torch.cat([init_cond.view(-1, 1), t.view(-1, 1), features],
-                              dim=1)
+                              dim=1)  ## rearrange; equiv to c(init_cond, t, features)
         t = torch.tensor([0., 1.]).to(device)
 
         outputs = {}
@@ -336,7 +339,7 @@ class NonCoxFuncModel(nn.Module):
         outputs["Lambda"] = outputs["Lambda"][:, 0]
         outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
 
-        if not self.training:
+        if not self.training:  ## ---where is self.training defined?---
             if self.last_eval and "eval_t" in inputs:
                 self.odefunc.set_batch_time_mode(False)
                 ones = torch.ones_like(inputs["t"])
@@ -390,7 +393,8 @@ class NonCoxFuncModel(nn.Module):
                     outputs["survival_seqs_{}".format(eps)] = torch.exp(
                         -odeint(self.odefunc, init_cond, t, rtol=1e-4,
                                 atol=1e-8)[1:, :, 0])
-
+            
+            ## compute Lambda at q25, q50, and q75 
             if "t_q25" in inputs:
                 outputs["t"] = inputs["t"]
                 self.odefunc.set_batch_time_mode(False)
