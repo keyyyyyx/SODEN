@@ -1,0 +1,12 @@
+{
+    "ode": {
+        "surv_ode_0": {
+            "layer_type": "surv_ode",
+            "batch_norm": false,
+            "func_type": "rec_mlp",
+            "has_feature": true,
+            "hidden_size": 14,
+            "num_layers": 1
+        }
+    }
+}

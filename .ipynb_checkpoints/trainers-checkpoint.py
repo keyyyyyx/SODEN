@@ -33,7 +33,7 @@ class SODENTrainer(object):
     ## Note: __double_leading_and_trailing_underscore__: "magic" objects or attributes that live in user-controlled namespaces. E.g. __init__, __import__ or __file__. Never invent such names; only use them as documented.
     def __init__(self,
                  model=None,
-                 device="cuda",
+                 device="cpu",  ## try device = "cpu" instead of "cuda"; cuda is no longer supported on macOS
                  criterions=None,
                  optimizer=None,
                  dataloaders=None,

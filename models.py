@@ -335,7 +335,7 @@ class NonCoxFuncModel(nn.Module):
         outputs["Lambda"] = odeint(
             self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:].squeeze()  # size: [length of t] x [batch size] x [dim of y0]  ## Solve ODE for cumulative hazard function
         self.odefunc.set_batch_time_mode(True)
-        outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## Solve ODE for hazard function
+        outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## use ODE to find hazard function
         outputs["Lambda"] = outputs["Lambda"][:, 0]
         outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
 
@@ -356,7 +356,7 @@ class NonCoxFuncModel(nn.Module):
                 t = inputs["eval_t"] / t_max
                 t = torch.cat([torch.zeros([1]).to(device), t], dim=0)
                 outputs["cum_hazard_seqs"] = odeint(
-                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]  
+                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]   ## ---what is cum_hazard_seqs and where it is used?---
 
                 # Eval for Brier Score
                 t = inputs["t_max"] * ones
@@ -581,12 +581,13 @@ class SODENModel(nn.Module):
           use_embed: Whether to use embedding layer after input.
         """
         super(SODENModel, self).__init__()
+        ## rnn: recurrent neural network
         if "rnn" in model_config:
             self.rnn_config = model_config["rnn"]["rnn_0"]
             if self.rnn_config["rnn_type"] == "LSTM":
-                RNNModel = nn.LSTM
-            elif self.rnn_config["rnn_type"] == "GRU":
-                RNNModel = nn.GRU
+                RNNModel = nn.LSTM  ## Applies a multi-layer long short-term memory (LSTM) RNN to an input sequence.
+            elif self.rnn_config["rnn_type"] == "GRU": 
+                RNNModel = nn.GRU   ## Applies a multi-layer gated recurrent unit (GRU) RNN to an input sequence.
             else:
                 raise NotImplementedError(
                     "Unsupported RNN type: %s." % self.rnn_type)
@@ -643,4 +644,4 @@ class SODENModel(nn.Module):
             fix_feat = inputs.pop("fix_feat")
             inputs["features"] = torch.cat([fix_feat, h_final], dim=1)
 
-        return self.model(inputs)
+        return self.model(inputs) ## call either NonCoxFuncModel or CoxFuncModel with specified inputs

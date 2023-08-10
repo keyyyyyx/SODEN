@@ -1,0 +1,409 @@
+--- 2023-08-08 23:15:01.674930 ---
+epoch 0
+early stop metric: 0.162180
+Phase: valid, metric: survival_loss: 0.162180
+Phase: valid, metric: concordance_q25: 0.669139
+Phase: valid, metric: concordance_q50: 0.668944
+Phase: valid, metric: concordance_q75: 0.669378
+Phase: test, metric: survival_loss: 0.168805
+Phase: test, metric: concordance_q25: 0.625565
+Phase: test, metric: concordance_q50: 0.623846
+Phase: test, metric: concordance_q75: 0.622111
+--- 2023-08-08 23:15:10.823551 ---
+epoch 1
+early stop metric: 0.141224
+Phase: valid, metric: survival_loss: 0.141224
+Phase: valid, metric: concordance_q25: 0.669074
+Phase: valid, metric: concordance_q50: 0.668835
+Phase: valid, metric: concordance_q75: 0.666124
+Phase: test, metric: survival_loss: 0.149906
+Phase: test, metric: concordance_q25: 0.625221
+Phase: test, metric: concordance_q50: 0.622471
+Phase: test, metric: concordance_q75: 0.618592
+--- 2023-08-08 23:15:20.894512 ---
+epoch 2
+early stop metric: 0.137440
+Phase: valid, metric: survival_loss: 0.137440
+Phase: valid, metric: concordance_q25: 0.670093
+Phase: valid, metric: concordance_q50: 0.669052
+Phase: valid, metric: concordance_q75: 0.667165
+Phase: test, metric: survival_loss: 0.146803
+Phase: test, metric: concordance_q25: 0.632243
+Phase: test, metric: concordance_q50: 0.630705
+Phase: test, metric: concordance_q75: 0.626612
+--- 2023-08-08 23:15:33.094460 ---
+epoch 3
+early stop metric: 0.135122
+Phase: valid, metric: survival_loss: 0.135122
+Phase: valid, metric: concordance_q25: 0.668922
+Phase: valid, metric: concordance_q50: 0.669204
+Phase: valid, metric: concordance_q75: 0.666602
+Phase: test, metric: survival_loss: 0.141593
+Phase: test, metric: concordance_q25: 0.637137
+Phase: test, metric: concordance_q50: 0.634862
+Phase: test, metric: concordance_q75: 0.631588
+--- 2023-08-08 23:15:45.176393 ---
+epoch 4
+early stop metric: 0.131216
+Phase: valid, metric: survival_loss: 0.131216
+Phase: valid, metric: concordance_q25: 0.667664
+Phase: valid, metric: concordance_q50: 0.666537
+Phase: valid, metric: concordance_q75: 0.664953
+Phase: test, metric: survival_loss: 0.133133
+Phase: test, metric: concordance_q25: 0.639887
+Phase: test, metric: concordance_q50: 0.637301
+Phase: test, metric: concordance_q75: 0.632554
+--- 2023-08-08 23:15:59.755117 ---
+epoch 5
+early stop metric: 0.123791
+Phase: valid, metric: survival_loss: 0.123791
+Phase: valid, metric: concordance_q25: 0.666710
+Phase: valid, metric: concordance_q50: 0.666103
+Phase: valid, metric: concordance_q75: 0.663609
+Phase: test, metric: survival_loss: 0.127356
+Phase: test, metric: concordance_q25: 0.638823
+Phase: test, metric: concordance_q50: 0.635370
+Phase: test, metric: concordance_q75: 0.629182
+--- 2023-08-08 23:16:20.508969 ---
+epoch 6
+early stop metric: 0.122624
+Phase: valid, metric: survival_loss: 0.122624
+Phase: valid, metric: concordance_q25: 0.668272
+Phase: valid, metric: concordance_q50: 0.666775
+Phase: valid, metric: concordance_q75: 0.663565
+Phase: test, metric: survival_loss: 0.130841
+Phase: test, metric: concordance_q25: 0.638414
+Phase: test, metric: concordance_q50: 0.635321
+Phase: test, metric: concordance_q75: 0.629657
+--- 2023-08-08 23:16:36.296866 ---
+epoch 7
+early stop metric: 0.130392
+Phase: valid, metric: survival_loss: 0.130392
+Phase: valid, metric: concordance_q25: 0.667794
+Phase: valid, metric: concordance_q50: 0.668272
+Phase: valid, metric: concordance_q75: 0.664953
+Phase: test, metric: survival_loss: 0.133875
+Phase: test, metric: concordance_q25: 0.643849
+Phase: test, metric: concordance_q50: 0.642637
+Phase: test, metric: concordance_q75: 0.639282
+--- 2023-08-08 23:16:52.863752 ---
+epoch 8
+early stop metric: 0.121628
+Phase: valid, metric: survival_loss: 0.121628
+Phase: valid, metric: concordance_q25: 0.668749
+Phase: valid, metric: concordance_q50: 0.667903
+Phase: valid, metric: concordance_q75: 0.663847
+Phase: test, metric: survival_loss: 0.128307
+Phase: test, metric: concordance_q25: 0.642785
+Phase: test, metric: concordance_q50: 0.640493
+Phase: test, metric: concordance_q75: 0.634191
+--- 2023-08-08 23:17:08.950509 ---
+epoch 9
+early stop metric: 0.115926
+Phase: valid, metric: survival_loss: 0.115926
+Phase: valid, metric: concordance_q25: 0.666797
+Phase: valid, metric: concordance_q50: 0.664411
+Phase: valid, metric: concordance_q75: 0.659944
+Phase: test, metric: survival_loss: 0.118493
+Phase: test, metric: concordance_q25: 0.640215
+Phase: test, metric: concordance_q50: 0.636352
+Phase: test, metric: concordance_q75: 0.628560
+--- 2023-08-08 23:17:24.968247 ---
+epoch 10
+early stop metric: 0.121592
+Phase: valid, metric: survival_loss: 0.121592
+Phase: valid, metric: concordance_q25: 0.663652
+Phase: valid, metric: concordance_q50: 0.664216
+Phase: valid, metric: concordance_q75: 0.659965
+Phase: test, metric: survival_loss: 0.121858
+Phase: test, metric: concordance_q25: 0.642441
+Phase: test, metric: concordance_q50: 0.641541
+Phase: test, metric: concordance_q75: 0.633635
+--- 2023-08-08 23:17:42.196871 ---
+epoch 11
+early stop metric: 0.113828
+Phase: valid, metric: survival_loss: 0.113828
+Phase: valid, metric: concordance_q25: 0.667859
+Phase: valid, metric: concordance_q50: 0.666059
+Phase: valid, metric: concordance_q75: 0.661548
+Phase: test, metric: survival_loss: 0.119246
+Phase: test, metric: concordance_q25: 0.642916
+Phase: test, metric: concordance_q50: 0.639871
+Phase: test, metric: concordance_q75: 0.630917
+--- 2023-08-08 23:17:58.774551 ---
+epoch 12
+early stop metric: 0.114847
+Phase: valid, metric: survival_loss: 0.114847
+Phase: valid, metric: concordance_q25: 0.666341
+Phase: valid, metric: concordance_q50: 0.666797
+Phase: valid, metric: concordance_q75: 0.661527
+Phase: test, metric: survival_loss: 0.113861
+Phase: test, metric: concordance_q25: 0.644700
+Phase: test, metric: concordance_q50: 0.642392
+Phase: test, metric: concordance_q75: 0.634944
+--- 2023-08-08 23:18:15.861415 ---
+epoch 13
+early stop metric: 0.114858
+Phase: valid, metric: survival_loss: 0.114858
+Phase: valid, metric: concordance_q25: 0.665864
+Phase: valid, metric: concordance_q50: 0.665170
+Phase: valid, metric: concordance_q75: 0.660551
+Phase: test, metric: survival_loss: 0.117219
+Phase: test, metric: concordance_q25: 0.643194
+Phase: test, metric: concordance_q50: 0.641000
+Phase: test, metric: concordance_q75: 0.631605
+--- 2023-08-08 23:18:34.405963 ---
+epoch 14
+step    10 total loss: 0.171246
+early stop metric: 0.108893
+Phase: valid, metric: survival_loss: 0.108893
+Phase: valid, metric: concordance_q25: 0.669031
+Phase: valid, metric: concordance_q50: 0.666667
+Phase: valid, metric: concordance_q75: 0.660399
+Phase: test, metric: survival_loss: 0.115585
+Phase: test, metric: concordance_q25: 0.642637
+Phase: test, metric: concordance_q50: 0.638578
+Phase: test, metric: concordance_q75: 0.630164
+--- 2023-08-08 23:18:51.872162 ---
+epoch 15
+early stop metric: 0.113472
+Phase: valid, metric: survival_loss: 0.113472
+Phase: valid, metric: concordance_q25: 0.665235
+Phase: valid, metric: concordance_q50: 0.664129
+Phase: valid, metric: concordance_q75: 0.658556
+Phase: test, metric: survival_loss: 0.113539
+Phase: test, metric: concordance_q25: 0.643292
+Phase: test, metric: concordance_q50: 0.640264
+Phase: test, metric: concordance_q75: 0.630050
+--- 2023-08-08 23:19:11.081799 ---
+epoch 16
+early stop metric: 0.113125
+Phase: valid, metric: survival_loss: 0.113125
+Phase: valid, metric: concordance_q25: 0.664346
+Phase: valid, metric: concordance_q50: 0.665756
+Phase: valid, metric: concordance_q75: 0.659727
+Phase: test, metric: survival_loss: 0.110895
+Phase: test, metric: concordance_q25: 0.643194
+Phase: test, metric: concordance_q50: 0.642212
+Phase: test, metric: concordance_q75: 0.631277
+--- 2023-08-08 23:19:29.959409 ---
+epoch 17
+early stop metric: 0.108678
+Phase: valid, metric: survival_loss: 0.108678
+Phase: valid, metric: concordance_q25: 0.665430
+Phase: valid, metric: concordance_q50: 0.664476
+Phase: valid, metric: concordance_q75: 0.659510
+Phase: test, metric: survival_loss: 0.112247
+Phase: test, metric: concordance_q25: 0.643178
+Phase: test, metric: concordance_q50: 0.638971
+Phase: test, metric: concordance_q75: 0.624583
+--- 2023-08-08 23:19:48.999912 ---
+epoch 18
+early stop metric: 0.112255
+Phase: valid, metric: survival_loss: 0.112255
+Phase: valid, metric: concordance_q25: 0.668879
+Phase: valid, metric: concordance_q50: 0.667014
+Phase: valid, metric: concordance_q75: 0.660269
+Phase: test, metric: survival_loss: 0.112467
+Phase: test, metric: concordance_q25: 0.643947
+Phase: test, metric: concordance_q50: 0.639265
+Phase: test, metric: concordance_q75: 0.624730
+--- 2023-08-08 23:20:08.440818 ---
+epoch 19
+early stop metric: 0.109057
+Phase: valid, metric: survival_loss: 0.109057
+Phase: valid, metric: concordance_q25: 0.667296
+Phase: valid, metric: concordance_q50: 0.666884
+Phase: valid, metric: concordance_q75: 0.659727
+Phase: test, metric: survival_loss: 0.112640
+Phase: test, metric: concordance_q25: 0.645273
+Phase: test, metric: concordance_q50: 0.641311
+Phase: test, metric: concordance_q75: 0.627594
+--- 2023-08-08 23:20:28.870587 ---
+epoch 20
+early stop metric: 0.110243
+Phase: valid, metric: survival_loss: 0.110243
+Phase: valid, metric: concordance_q25: 0.665322
+Phase: valid, metric: concordance_q50: 0.666450
+Phase: valid, metric: concordance_q75: 0.659466
+Phase: test, metric: survival_loss: 0.111219
+Phase: test, metric: concordance_q25: 0.642883
+Phase: test, metric: concordance_q50: 0.641033
+Phase: test, metric: concordance_q75: 0.627202
+--- 2023-08-08 23:20:48.173322 ---
+epoch 21
+early stop metric: 0.110482
+Phase: valid, metric: survival_loss: 0.110482
+Phase: valid, metric: concordance_q25: 0.665777
+Phase: valid, metric: concordance_q50: 0.666450
+Phase: valid, metric: concordance_q75: 0.660920
+Phase: test, metric: survival_loss: 0.110233
+Phase: test, metric: concordance_q25: 0.642523
+Phase: test, metric: concordance_q50: 0.640084
+Phase: test, metric: concordance_q75: 0.628282
+--- 2023-08-08 23:21:08.145142 ---
+epoch 22
+early stop metric: 0.126455
+Phase: valid, metric: survival_loss: 0.126455
+Phase: valid, metric: concordance_q25: 0.661505
+Phase: valid, metric: concordance_q50: 0.664368
+Phase: valid, metric: concordance_q75: 0.662676
+Phase: test, metric: survival_loss: 0.123469
+Phase: test, metric: concordance_q25: 0.643767
+Phase: test, metric: concordance_q50: 0.644487
+Phase: test, metric: concordance_q75: 0.638300
+--- 2023-08-08 23:21:27.650189 ---
+epoch 23
+early stop metric: 0.116689
+Phase: valid, metric: survival_loss: 0.116689
+Phase: valid, metric: concordance_q25: 0.663132
+Phase: valid, metric: concordance_q50: 0.664194
+Phase: valid, metric: concordance_q75: 0.658794
+Phase: test, metric: survival_loss: 0.111751
+Phase: test, metric: concordance_q25: 0.641508
+Phase: test, metric: concordance_q50: 0.640166
+Phase: test, metric: concordance_q75: 0.631474
+--- 2023-08-08 23:21:47.725923 ---
+epoch 24
+early stop metric: 0.107654
+Phase: valid, metric: survival_loss: 0.107654
+Phase: valid, metric: concordance_q25: 0.666558
+Phase: valid, metric: concordance_q50: 0.667079
+Phase: valid, metric: concordance_q75: 0.661136
+Phase: test, metric: survival_loss: 0.114714
+Phase: test, metric: concordance_q25: 0.640771
+Phase: test, metric: concordance_q50: 0.637579
+Phase: test, metric: concordance_q75: 0.624697
+--- 2023-08-08 23:22:08.889049 ---
+epoch 25
+early stop metric: 0.109878
+Phase: valid, metric: survival_loss: 0.109878
+Phase: valid, metric: concordance_q25: 0.666580
+Phase: valid, metric: concordance_q50: 0.666623
+Phase: valid, metric: concordance_q75: 0.659033
+Phase: test, metric: survival_loss: 0.113519
+Phase: test, metric: concordance_q25: 0.640951
+Phase: test, metric: concordance_q50: 0.635877
+Phase: test, metric: concordance_q75: 0.622225
+--- 2023-08-08 23:22:28.832762 ---
+epoch 26
+early stop metric: 0.106678
+Phase: valid, metric: survival_loss: 0.106678
+Phase: valid, metric: concordance_q25: 0.668944
+Phase: valid, metric: concordance_q50: 0.669052
+Phase: valid, metric: concordance_q75: 0.660681
+Phase: test, metric: survival_loss: 0.112827
+Phase: test, metric: concordance_q25: 0.643489
+Phase: test, metric: concordance_q50: 0.637416
+Phase: test, metric: concordance_q75: 0.620900
+--- 2023-08-08 23:22:49.824001 ---
+epoch 27
+early stop metric: 0.114407
+Phase: valid, metric: survival_loss: 0.114407
+Phase: valid, metric: concordance_q25: 0.665886
+Phase: valid, metric: concordance_q50: 0.667534
+Phase: valid, metric: concordance_q75: 0.658881
+Phase: test, metric: survival_loss: 0.121196
+Phase: test, metric: concordance_q25: 0.640820
+Phase: test, metric: concordance_q50: 0.638185
+Phase: test, metric: concordance_q75: 0.624844
+--- 2023-08-08 23:23:13.093727 ---
+epoch 28
+step    20 total loss: 0.118944
+early stop metric: 0.125053
+Phase: valid, metric: survival_loss: 0.125053
+Phase: valid, metric: concordance_q25: 0.661830
+Phase: valid, metric: concordance_q50: 0.665300
+Phase: valid, metric: concordance_q75: 0.660898
+Phase: test, metric: survival_loss: 0.124942
+Phase: test, metric: concordance_q25: 0.640624
+Phase: test, metric: concordance_q50: 0.640788
+Phase: test, metric: concordance_q75: 0.631441
+--- 2023-08-08 23:23:34.404998 ---
+epoch 29
+early stop metric: 0.113101
+Phase: valid, metric: survival_loss: 0.113101
+Phase: valid, metric: concordance_q25: 0.666580
+Phase: valid, metric: concordance_q50: 0.666341
+Phase: valid, metric: concordance_q75: 0.655758
+Phase: test, metric: survival_loss: 0.116010
+Phase: test, metric: concordance_q25: 0.639855
+Phase: test, metric: concordance_q50: 0.633438
+Phase: test, metric: concordance_q75: 0.616938
+--- 2023-08-08 23:23:55.886412 ---
+epoch 30
+early stop metric: 0.118878
+Phase: valid, metric: survival_loss: 0.118878
+Phase: valid, metric: concordance_q25: 0.667491
+Phase: valid, metric: concordance_q50: 0.668879
+Phase: valid, metric: concordance_q75: 0.662112
+Phase: test, metric: survival_loss: 0.126217
+Phase: test, metric: concordance_q25: 0.643521
+Phase: test, metric: concordance_q50: 0.639887
+Phase: test, metric: concordance_q75: 0.627496
+--- 2023-08-08 23:24:17.586053 ---
+epoch 31
+early stop metric: 0.111225
+Phase: valid, metric: survival_loss: 0.111225
+Phase: valid, metric: concordance_q25: 0.665994
+Phase: valid, metric: concordance_q50: 0.667556
+Phase: valid, metric: concordance_q75: 0.660182
+Phase: test, metric: survival_loss: 0.110486
+Phase: test, metric: concordance_q25: 0.641933
+Phase: test, metric: concordance_q50: 0.639134
+Phase: test, metric: concordance_q75: 0.625303
+--- 2023-08-08 23:24:39.153204 ---
+epoch 32
+early stop metric: 0.119380
+Phase: valid, metric: survival_loss: 0.119380
+Phase: valid, metric: concordance_q25: 0.664455
+Phase: valid, metric: concordance_q50: 0.668272
+Phase: valid, metric: concordance_q75: 0.662763
+Phase: test, metric: survival_loss: 0.122862
+Phase: test, metric: concordance_q25: 0.641639
+Phase: test, metric: concordance_q50: 0.641688
+Phase: test, metric: concordance_q75: 0.631588
+--- 2023-08-08 23:25:00.669821 ---
+epoch 33
+early stop metric: 0.115962
+Phase: valid, metric: survival_loss: 0.115962
+Phase: valid, metric: concordance_q25: 0.665170
+Phase: valid, metric: concordance_q50: 0.666406
+Phase: valid, metric: concordance_q75: 0.658274
+Phase: test, metric: survival_loss: 0.117142
+Phase: test, metric: concordance_q25: 0.641393
+Phase: test, metric: concordance_q50: 0.637825
+Phase: test, metric: concordance_q75: 0.625892
+--- 2023-08-08 23:25:23.164895 ---
+epoch 34
+early stop metric: 0.113901
+Phase: valid, metric: survival_loss: 0.113901
+Phase: valid, metric: concordance_q25: 0.665777
+Phase: valid, metric: concordance_q50: 0.666255
+Phase: valid, metric: concordance_q75: 0.656907
+Phase: test, metric: survival_loss: 0.117746
+Phase: test, metric: concordance_q25: 0.639806
+Phase: test, metric: concordance_q50: 0.635173
+Phase: test, metric: concordance_q75: 0.620343
+--- 2023-08-08 23:25:45.912719 ---
+epoch 35
+early stop metric: 0.113465
+Phase: valid, metric: survival_loss: 0.113465
+Phase: valid, metric: concordance_q25: 0.667859
+Phase: valid, metric: concordance_q50: 0.667100
+Phase: valid, metric: concordance_q75: 0.657124
+Phase: test, metric: survival_loss: 0.119153
+Phase: test, metric: concordance_q25: 0.641181
+Phase: test, metric: concordance_q50: 0.632898
+Phase: test, metric: concordance_q75: 0.615842
+--- 2023-08-08 23:26:08.288284 ---
+epoch 36
+early stop metric: 0.116735
+Phase: valid, metric: survival_loss: 0.116735
+Phase: valid, metric: concordance_q25: 0.668922
+Phase: valid, metric: concordance_q50: 0.671264
+Phase: valid, metric: concordance_q75: 0.664021
+Phase: test, metric: survival_loss: 0.125515
+Phase: test, metric: concordance_q25: 0.641819
+Phase: test, metric: concordance_q50: 0.638545
+Phase: test, metric: concordance_q75: 0.627251

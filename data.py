@@ -47,13 +47,13 @@ class OrderedBatchRandomSampler(object):
 
     def __iter__(self):
         batch = []
-        for idx in self.random_state.permutation(self.n):
+        for idx in self.random_state.permutation(self.n):  ## generate random indices
             batch.append(idx)
             if len(batch) == self.batch_size:
                 yield sorted(batch)
                 batch = []
         if len(batch) > 0 and not self.drop_last:
-            yield sorted(batch)
+            yield sorted(batch)  ## Return sends a specified value back to its caller whereas Yield can produce a sequence of values. 
 
 
 def my_collate_fn(batch):
