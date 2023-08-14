@@ -117,7 +117,7 @@ elif args.dataset == "support":
     for phase in ["train", "valid", "test"]:
         if args.fine_tune and phase in ["train", "valid"]:
             input_file = os.path.join(
-                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found
+                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found 
         else:      ## not (args.fine_tune and phase in ["train", "valid"])
             input_file = os.path.join(
                 args.path, phase + "_%d.npz" % args.split)  ## file exists
@@ -258,6 +258,7 @@ exp_name = SEP.join([exp_name, "split_%d" % args.split, "seed_%d" % args.seed])
 result_path = args.result_path or os.path.join(args.path, "results")
 if not os.path.exists(result_path):
     os.makedirs(result_path)
+## save model
 if args.save_model or args.fine_tune or args.evaluate:
     model_path = args.model_path or os.path.join(args.path, "models")
     if not os.path.exists(model_path):
@@ -295,6 +296,7 @@ trainer = SODENTrainer(
     debug=args.debug)    # Debug flag.
 
 ## compute evaluation metrics if specified
+## save logs and best earlystop metric
 if not args.evaluate:
     trainer.train()
 else:

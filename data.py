@@ -159,7 +159,7 @@ def get_dataloader(t,
 
 
 def get_mimic_dataloader(input_file, batch_size, random_state, is_eval=False):
-        dt = np.load(input_file)
+        dt = np.load(input_file) ## load data file (....npz)
         std_x = dt["arr_0"]
         y = dt["arr_1"]
 

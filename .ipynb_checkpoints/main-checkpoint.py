@@ -23,7 +23,7 @@ parser.add_argument("--dataset", default="support")
 parser.add_argument("--path", default="./data/support/")
 parser.add_argument("--verbose", type=int, default=2)
 parser.add_argument("--debug", action="store_true")
-parser.add_argument("--device", default="cpu")
+parser.add_argument("--device", default="cpu")  ## cuda is no longer supported on macOS; switch default device to "cpu" instead
 parser.add_argument("--fine_tune", action="store_true")
 parser.add_argument("--evaluate", action="store_true")
 parser.add_argument("--seed", type=int, default=-1)
@@ -258,6 +258,7 @@ exp_name = SEP.join([exp_name, "split_%d" % args.split, "seed_%d" % args.seed])
 result_path = args.result_path or os.path.join(args.path, "results")
 if not os.path.exists(result_path):
     os.makedirs(result_path)
+## save model
 if args.save_model or args.fine_tune or args.evaluate:
     model_path = args.model_path or os.path.join(args.path, "models")
     if not os.path.exists(model_path):
@@ -295,6 +296,7 @@ trainer = SODENTrainer(
     debug=args.debug)    # Debug flag.
 
 ## compute evaluation metrics if specified
+## save logs and best earlystop metric
 if not args.evaluate:
     trainer.train()
 else:
