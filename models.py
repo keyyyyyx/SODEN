@@ -387,7 +387,7 @@ class NonCoxFuncModel(nn.Module):
                     t_max = inputs["t_max_{}".format(eps)]
                     t = torch.linspace(
                         t_min, t_max, NUM_INT_STEPS, dtype=init_cond.dtype,
-                        device=device) ## generate timesteps 
+                        device=device) ## generate timesteps with given min, max, and num steps
                     t = torch.cat([torch.zeros([1]).to(device), t], dim=0)
                     t = t / t_max
                     outputs["survival_seqs_{}".format(eps)] = torch.exp(
