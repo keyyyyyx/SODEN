@@ -23,7 +23,7 @@ parser.add_argument("--dataset", default="support")
 parser.add_argument("--path", default="./data/support/")
 parser.add_argument("--verbose", type=int, default=2)
 parser.add_argument("--debug", action="store_true")
-parser.add_argument("--device", default="cpu")  ## cuda is no longer supported on macOS; switch default device to "cpu" instead
+parser.add_argument("--device", default="cuda")  ## cuda is no longer supported on macOS; switch default device to "cpu" instead
 parser.add_argument("--fine_tune", action="store_true")
 parser.add_argument("--evaluate", action="store_true")
 parser.add_argument("--seed", type=int, default=-1)
@@ -117,7 +117,7 @@ elif args.dataset == "support":
     for phase in ["train", "valid", "test"]:
         if args.fine_tune and phase in ["train", "valid"]:
             input_file = os.path.join(
-                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found
+                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found 
         else:      ## not (args.fine_tune and phase in ["train", "valid"])
             input_file = os.path.join(
                 args.path, phase + "_%d.npz" % args.split)  ## file exists

@@ -33,7 +33,7 @@ class SODENTrainer(object):
     ## Note: __double_leading_and_trailing_underscore__: "magic" objects or attributes that live in user-controlled namespaces. E.g. __init__, __import__ or __file__. Never invent such names; only use them as documented.
     def __init__(self,
                  model=None,
-                 device="cpu",  ## try device = "cpu" instead of "cuda"; cuda is no longer supported on macOS
+                 device="cuda",  ## try device = "cpu" instead of "cuda"; cuda is no longer supported on macOS
                  criterions=None,
                  optimizer=None,
                  dataloaders=None,
@@ -215,7 +215,7 @@ class SODENTrainer(object):
                 level=2)
             self.clear_running_loss()
     
-    ## Performs a single optimization step for each batch_data in a epoch
+    ## Performs a single optimization step for each batch_data in a epoch; store loss in running_loss_dict
     def train_one_epoch(self, train_loader): ## train_loader: dataloaders["train"]
         self.model.train()
         self.curr_step = 0
