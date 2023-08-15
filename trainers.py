@@ -243,6 +243,7 @@ class SODENTrainer(object):
 
     def eval_update_one_step(self, features, labels, phase="valid"):
         outputs = self.model(features)
+        self.output = output        ## Yueqi's edit; save output in model file
         for metric_name in self.curr_metrics[phase]:
             self.curr_metrics[phase][metric_name].add(detach(outputs),
                                                       detach(labels))
@@ -267,6 +268,7 @@ class SODENTrainer(object):
                 "metric": self.best_earlystop_metric,
                 "model_state_dict": self.model.state_dict(),
                 "optimizer_state_dict": self.optimizer.state_dict(),
+                "model_output": self.output,  ## Yueqi's edit; save output to model file
             }, model_file)
 
     def is_earlystop_metric(self, metric_name):
