@@ -246,6 +246,8 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
                             batch_norm=batch_norm)
     
     ## ---where does the y come from?--- passed within odeint as init_cond?
+    ## forward propagetion; one step forward
+    ## outputs a number from nn
     def forward(self, t, y):
         """
         Arguments:
@@ -277,7 +279,7 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         zeros = torch.zeros_like(
             y.index_select(-1, torch.tensor(range(1, y.size(-1))).to(device))
         )  ## Returns a tensor filled with the scalar value 0, with the same size as input
-        output = torch.cat([output, zeros], dim=1)
+        output = torch.cat([output, zeros], dim=1)   
         if self.batch_time_mode:
             return output
         else:
@@ -309,7 +311,7 @@ class NonCoxFuncModel(nn.Module):
         if self.func_type == "rec_mlp":
             self.odefunc = ContextRecMLPODEFunc(
                 feature_size, config["hidden_size"], config["num_layers"],
-                batch_norm=config["batch_norm"], use_embed=use_embed)     ## initialize ContextRecMLPODEFunc; 
+                batch_norm=config["batch_norm"], use_embed=use_embed)     ## initialize ContextRecMLPODEFunc; ode function
         else:
             raise NotImplementedError("Function type %s is not supported."
                                       % self.func_type)
@@ -325,7 +327,7 @@ class NonCoxFuncModel(nn.Module):
         init_cond = inputs["init_cond"]
         features = inputs["features"]
         init_cond = torch.cat([init_cond.view(-1, 1), t.view(-1, 1), features],
-                              dim=1)
+                              dim=1)  ## rearrange; equiv to c(init_cond, t, features)
         t = torch.tensor([0., 1.]).to(device)
 
         outputs = {}
@@ -333,12 +335,13 @@ class NonCoxFuncModel(nn.Module):
         outputs["Lambda"] = odeint(
             self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:].squeeze()  # size: [length of t] x [batch size] x [dim of y0]  ## Solve ODE for cumulative hazard function
         self.odefunc.set_batch_time_mode(True)
-        outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## Solve ODE for hazard function
+        outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## use ODE to find hazard function
         outputs["Lambda"] = outputs["Lambda"][:, 0]
         outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
 
-        if not self.training:
-            if self.last_eval and "eval_t" in inputs:
+        if not self.training:  ## ---where is self.training defined?---
+           # outputs["last_eval"] = self.last_eval   ## Yueqi's edit, test last_eval
+            if True: # self.last_eval and "eval_t" in inputs:
                 self.odefunc.set_batch_time_mode(False)
                 ones = torch.ones_like(inputs["t"])
                 # Eval for time-dependent C-index
@@ -354,7 +357,7 @@ class NonCoxFuncModel(nn.Module):
                 t = inputs["eval_t"] / t_max
                 t = torch.cat([torch.zeros([1]).to(device), t], dim=0)
                 outputs["cum_hazard_seqs"] = odeint(
-                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]  
+                    self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:, :, 0]   ## ---what is cum_hazard_seqs and where it is used?---
 
                 # Eval for Brier Score
                 t = inputs["t_max"] * ones
@@ -385,13 +388,14 @@ class NonCoxFuncModel(nn.Module):
                     t_max = inputs["t_max_{}".format(eps)]
                     t = torch.linspace(
                         t_min, t_max, NUM_INT_STEPS, dtype=init_cond.dtype,
-                        device=device)
+                        device=device) ## generate timesteps with given min, max, and num steps
                     t = torch.cat([torch.zeros([1]).to(device), t], dim=0)
                     t = t / t_max
                     outputs["survival_seqs_{}".format(eps)] = torch.exp(
                         -odeint(self.odefunc, init_cond, t, rtol=1e-4,
                                 atol=1e-8)[1:, :, 0])
-
+            
+            ## compute Lambda at q25, q50, and q75 
             if "t_q25" in inputs:
                 outputs["t"] = inputs["t"]
                 self.odefunc.set_batch_time_mode(False)
@@ -578,12 +582,13 @@ class SODENModel(nn.Module):
           use_embed: Whether to use embedding layer after input.
         """
         super(SODENModel, self).__init__()
+        ## rnn: recurrent neural network
         if "rnn" in model_config:
             self.rnn_config = model_config["rnn"]["rnn_0"]
             if self.rnn_config["rnn_type"] == "LSTM":
-                RNNModel = nn.LSTM
-            elif self.rnn_config["rnn_type"] == "GRU":
-                RNNModel = nn.GRU
+                RNNModel = nn.LSTM  ## Applies a multi-layer long short-term memory (LSTM) RNN to an input sequence.
+            elif self.rnn_config["rnn_type"] == "GRU": 
+                RNNModel = nn.GRU   ## Applies a multi-layer gated recurrent unit (GRU) RNN to an input sequence.
             else:
                 raise NotImplementedError(
                     "Unsupported RNN type: %s." % self.rnn_type)
@@ -640,4 +645,4 @@ class SODENModel(nn.Module):
             fix_feat = inputs.pop("fix_feat")
             inputs["features"] = torch.cat([fix_feat, h_final], dim=1)
 
-        return self.model(inputs)
+        return self.model(inputs) ## call either NonCoxFuncModel or CoxFuncModel with specified inputs

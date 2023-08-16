@@ -340,7 +340,8 @@ class NonCoxFuncModel(nn.Module):
         outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
 
         if not self.training:  ## ---where is self.training defined?---
-            if self.last_eval and "eval_t" in inputs:
+           # outputs["last_eval"] = self.last_eval   ## Yueqi's edit, test last_eval
+            if True: # self.last_eval and "eval_t" in inputs:
                 self.odefunc.set_batch_time_mode(False)
                 ones = torch.ones_like(inputs["t"])
                 # Eval for time-dependent C-index

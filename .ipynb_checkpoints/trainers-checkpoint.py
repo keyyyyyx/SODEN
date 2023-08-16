@@ -243,7 +243,7 @@ class SODENTrainer(object):
 
     def eval_update_one_step(self, features, labels, phase="valid"):
         outputs = self.model(features)
-        self.output = output        ## Yueqi's edit; save output in model file
+        self.output = outputs        ## Yueqi's edit; save output in model file
         for metric_name in self.curr_metrics[phase]:
             self.curr_metrics[phase][metric_name].add(detach(outputs),
                                                       detach(labels))
