@@ -334,9 +334,13 @@ class NonCoxFuncModel(nn.Module):
         self.odefunc.set_batch_time_mode(False)
         outputs["Lambda"] = odeint(
             self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:].squeeze()  # size: [length of t] x [batch size] x [dim of y0]  ## Solve ODE for cumulative hazard function
+        if len(list(outputs["Lambda"].shape)) == 1:
+            outputs["Lambda"] = outputs["Lambda"].reshape([1, list(outputs["Lambda"].shape)[0]])   ## Yueqi's edit; add to fix dimension error
         self.odefunc.set_batch_time_mode(True)
         outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## use ODE to find hazard function
         outputs["Lambda"] = outputs["Lambda"][:, 0]
+        if len(list(outputs["lambda"].shape)) == 1:
+            outputs["lambda"] = outputs["lambda"].reshape([1, list(outputs["lambda"].shape)[0]])   ## Yueqi's edit; add to fix dimension error
         outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
 
         if not self.training:  ## ---where is self.training defined?---
@@ -410,6 +414,8 @@ class NonCoxFuncModel(nn.Module):
                     outputs["Lambda_%s" % q] = odeint(
                         self.odefunc, init_cond, t,
                         rtol=1e-4, atol=1e-8)[1:].squeeze()
+                    if len(list(outputs["Lambda_%s" % q].shape)) == 1:
+                        outputs["Lambda_%s" % q] = outputs["Lambda_%s" % q].reshape([1, list(outputs["Lambda_%s" % q].shape)[0]])   ## Yueqi's edit; add to fix dimension error
                     outputs["Lambda_%s" % q] = outputs["Lambda_%s" % q][:, 0]
 
         return outputs

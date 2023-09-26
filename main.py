@@ -132,6 +132,28 @@ elif args.dataset == "support":
             batch_size,
             random_state,
             is_eval=(phase != "train"))
+elif args.dataset == "simulation":
+    assert args.path.strip("/").split("/")[-1] == "simulation"
+    # Prepare dataloaders.
+    random_state = np.random.RandomState(seed=0)
+    for phase in ["train", "valid", "test"]:
+        if args.fine_tune and phase in ["train", "valid"]:
+            input_file = os.path.join(
+                args.path, phase + "_%d_fine_tune.npz" % args.split)  ## ? file not found 
+        else:      ## not (args.fine_tune and phase in ["train", "valid"])
+            input_file = os.path.join(
+                args.path, phase + "_%d.npz" % args.split)  ## file exists
+        batch_size = train_config["batch_size"]
+        if use_full_size_per_batch and phase == "train":
+            dt = np.load(input_file)
+            batch_size = dt["arr_1"].shape[0]
+        elif phase != "train":
+            batch_size = 1024
+        dataloaders[phase], feature_size = get_mimic_dataloader(
+            input_file,
+            batch_size,
+            random_state,
+            is_eval=(phase != "train"))
 elif args.dataset == "metabric":
     assert args.path.strip("/").split("/")[-1] == "metabric"
     # Prepare dataloaders.
