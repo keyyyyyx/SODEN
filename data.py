@@ -157,8 +157,11 @@ def get_dataloader(t,
         num_workers=NUM_WORKERS)
     return dataloader
 
-
+## Called in main.py
 def get_mimic_dataloader(input_file, batch_size, random_state, is_eval=False):
+    ## input_file: A string of URL of input file; constructed in main.py based on user input
+    ## batch_size: Integer. Generated in configs. 
+    ## random_state: np.random.RandomState object. Generated in main.py
         dt = np.load(input_file) ## load data file (....npz)
         std_x = dt["arr_0"]
         y = dt["arr_1"]

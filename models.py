@@ -262,18 +262,19 @@ class ContextRecMLPODEFunc(BaseSurvODEFunc):
         """
         self.nfe += 1
         device = next(self.parameters()).device
-        Lambda_t = y.index_select(-1, torch.tensor([0]).to(device)).view(-1, 1) ## retrieve Lambda_t from y, returns as a 2-D tensor of 1 element
-        T = y.index_select(-1, torch.tensor([1]).to(device)).view(-1, 1)  ## retrieve the final time step T from y, returns as a 2-D tensor of 1 element
-        x = y.index_select(-1, torch.tensor(range(2, y.size(-1))).to(device))  ## retrieve features from y, returns as a 1-D tensor
+        Lambda_t = y.index_select(-1, torch.tensor([0]).to(device)).view(-1, 1) ## retrieve Lambda_t from y, returns as a 2-D tensor of m elements
+        T = y.index_select(-1, torch.tensor([1]).to(device)).view(-1, 1)  ## retrieve the final time step T from y, returns as a 2-D tensor of m elements
+        x = y.index_select(-1, torch.tensor(range(2, y.size(-1))).to(device))  ## retrieve features from y, returns as a m x d matrix
         if self.use_embed:
             x = torch.mean(
                 self.embed(torch.tensor(x, dtype=torch.long).to(device)),
                 dim=1)
         # Rescaling trick  ## time rescaling
         # $\int_0^T f(s; x) ds = \int_0^1 T f(tT; x) dt$, where $t = s / T$
+        ## cbind(Lambda_t, cbind(Lambda_t, T), x)
         inp = torch.cat(
             [Lambda_t,
-             t.repeat(T.size()) * T,  # s = t * T; time step to be evaluated * final time step
+             t.repeat(T.size()) * T,  ## cbind(rep(0, m), T)
              x.view(-1, self.feature_size)], dim=1)
         output = self.net(inp) * T  # f(tT; x) * T
         zeros = torch.zeros_like(
@@ -333,15 +334,15 @@ class NonCoxFuncModel(nn.Module):
         outputs = {}
         self.odefunc.set_batch_time_mode(False)
         outputs["Lambda"] = odeint(
-            self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:].squeeze()  # size: [length of t] x [batch size] x [dim of y0]  ## Solve ODE for cumulative hazard function
+            self.odefunc, init_cond, t, rtol=1e-4, atol=1e-8)[1:].squeeze()  ## returns cbind(Lambda, t, x), a m x (d+2) matrix
         if len(list(outputs["Lambda"].shape)) == 1:
             outputs["Lambda"] = outputs["Lambda"].reshape([1, list(outputs["Lambda"].shape)[0]])   ## Yueqi's edit; add to fix dimension error
         self.odefunc.set_batch_time_mode(True)
         outputs["lambda"] = self.odefunc(t[1:], outputs["Lambda"]).squeeze()  ## use ODE to find hazard function
-        outputs["Lambda"] = outputs["Lambda"][:, 0]
+        outputs["Lambda"] = outputs["Lambda"][:, 0] ## keep only the first column, Lambda
         if len(list(outputs["lambda"].shape)) == 1:
             outputs["lambda"] = outputs["lambda"].reshape([1, list(outputs["lambda"].shape)[0]])   ## Yueqi's edit; add to fix dimension error
-        outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"]
+        outputs["lambda"] = outputs["lambda"][:, 0] / inputs["t"] ## keep only the first column, lambda
 
         if not self.training:  ## ---where is self.training defined?---
            # outputs["last_eval"] = self.last_eval   ## Yueqi's edit, test last_eval
